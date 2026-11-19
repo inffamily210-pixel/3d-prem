@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HIYUKI STORE 3D — Digital & Kreatif | Aplikasi Premium</title>
+    <style>
+        /* =====================================================================
+           1. RESET & CSS VARIABLES (100% OFFLINE SELF-CONTAINED STYLING)
+           ===================================================================== */
+        :root {
+            --bg-main: #060911;
+            --bg-panel: rgba(14, 20, 34, 0.88);
+            --bg-card: rgba(18, 26, 44, 0.92);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #00ff88;
+            --accent-dark: #063b2b;
+            --accent-glow: rgba(0, 255, 136, 0.32);
+            --radius-lg: 22px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        button, input {
+            font-family: inherit;
+            color: inherit;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: fixed;
+            top: 16%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85vw;
+            height: 85vw;
+            max-width: 600px;
+            max-height: 600px;
+            border-radius: 50%;
+            background: var(--accent);
+            filter: blur(115px);
+            opacity: 0.22;
+            pointer-events: none;
+            z-index: 0;
+            transition: background 0.5s ease;
+        }
+
+        /* =====================================================================
+           2. HEADER & NAVIGATION
+           ===================================================================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(8, 12, 22, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: #05080f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 18px var(--accent-glow);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .brand-title span {
+            color: var(--accent);
+            transition: color 0.4s ease;
+        }
+
+        .brand-sub {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .cart-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .cart-btn:active {
+            transform: scale(0.95);
+        }
+
+        .cart-badge {
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #05080f;
+            font-size: 11px;
+            font-weight: 900;
+            transition: background 0.4s ease;
+        }
+
+        /* =====================================================================
+           3. MAIN LAYOUT & PANELS
+           ===================================================================== */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 18px 16px 64px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 960px) {
+            .hero-grid {
+                grid-template-columns: 1.05fr 1fr;
+                align-items: start;
+            }
+        }
+
+        .panel {
+            background: var(--bg-panel);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+
+        /* =====================================================================
+           4. PANGGUNG KARTU VIP 3D INTERAKTIF (TWO-SIDED CSS 3D ENGINE)
+           ===================================================================== */
+        .stage-topbar {
+            padding: 14px 16px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 11px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #e2e8f0;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulseDot 1.6s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.45); opacity: 0.5; }
+        }
+
+        .stage-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ctrl-btn {
+            padding: 6px 10px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-size: 11px;
+            font-weight: 700;
+            color: #f1f5f9;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.94);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .stage-3d-viewport {
+            position: relative;
+            width: 100%;
+            height: 315px;
+            perspective: 1100px;
+            -webkit-perspective: 1100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: pan-y;
+            cursor: grab;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        @media (min-width: 640px) {
+            .stage-3d-viewport {
+                height: 365px;
+            }
+        }
+
+        .stage-3d-viewport:active {
+            cursor: grabbing;
+        }
+
+        /* Orbit Ring */
+        .orbit-ring {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 1.5px dashed var(--accent);
+            opacity: 0.26;
+            transform: rotateX(72deg) rotateY(10deg);
+            animation: orbitSpin 16s linear infinite;
+            pointer-events: none;
+            transition: border-color 0.4s ease;
+        }
+
+        @keyframes orbitSpin {
+            from { transform: rotateX(72deg) rotateY(10deg) rotateZ(0deg); }
+            to { transform: rotateX(72deg) rotateY(10deg) rotateZ(360deg); }
+        }
+
+        /* 3D Card Container */
+        .vip-card-3d {
+            position: relative;
+            width: 296px;
+            height: 186px;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        @media (min-width: 640px) {
+            .vip-card-3d {
+                width: 348px;
+                height: 218px;
+            }
+        }
+
+        /* Thickness Edge Plates */
+        .card-edge-layer {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: var(--accent);
+            opacity: 0.42;
+            transform: translateZ(0px);
+            pointer-events: none;
+            transition: background 0.4s ease;
+        }
+
+        /* Front & Back Faces */
+        .card-side {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            border: 1.5px solid rgba(255, 255, 255, 0.24);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), inset 0 0 22px rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        @media (min-width: 640px) {
+            .card-side {
+                padding: 20px 24px;
+            }
+        }
+
+        .card-side-front {
+            background: linear-gradient(135deg, #0b1120 0%, var(--accent-dark) 58%, #070b14 100%);
+            transform: translateZ(6px);
+        }
+
+        .card-side-back {
+            background: linear-gradient(135deg, #070b14 0%, var(--accent-dark) 50%, #0b1120 100%);
+            transform: rotateY(180deg) translateZ(6px);
+        }
+
+        .card-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .card-holo-glare {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                circle at var(--glare-x, 50%) var(--glare-y, 50%),
+                rgba(255, 255, 255, 0.28) 0%,
+                rgba(255, 255, 255, 0.06) 35%,
+                transparent 70%
+            );
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        /* Explicit Icon Container Sizes (Fixes invisible/0px SVG bug) */
+        .icon-box-card {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            min-height: 48px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1.5px solid rgba(255, 255, 255, 0.28);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.65);
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-box-card svg,
+        .icon-box-detail svg,
+        .icon-box-catalog svg,
+        .icon-box-switcher svg,
+        .icon-box-mini svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .card-front-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .vip-pass-tag {
+            padding: 5px 11px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+        }
+
+        .card-front-mid {
+            position: relative;
+            z-index: 2;
+            margin: auto 0;
+        }
+
+        .card-official-label {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            color: rgba(226, 232, 240, 0.78);
+            text-transform: uppercase;
+        }
+
+        .card-app-name {
+            font-size: 20px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-top: 2px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        @media (min-width: 640px) {
+            .card-app-name {
+                font-size: 23px;
+            }
+        }
+
+        .card-app-tagline {
+            font-size: 11px;
+            color: #cbd5e1;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-front-bottom {
+            position: relative;
+            z-index: 2;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .card-price-label {
+            display: block;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .card-price-value {
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1.1;
+        }
+
+        .card-warranty-pill {
+            padding: 4px 9px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            font-size: 9px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.04em;
+        }
+
+        /* Back Side Card Elements */
+        .card-back-strip {
+            margin: -4px -18px 0;
+            padding: 7px 18px;
+            background: rgba(0, 0, 0, 0.85);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .icon-box-mini {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            min-height: 22px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .card-back-info {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin: auto 0;
+        }
+
+        .back-info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .card-back-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #cbd5e1;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            padding-top: 8px;
+        }
+
+        /* Stage Footer & Quick Switcher */
+        .stage-footer {
+            padding: 0 16px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drag-hint {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .quick-switcher {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .quick-switcher::-webkit-scrollbar {
+            height: 4px;
+        }
+        .quick-switcher::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 99px;
+        }
+
+        .switcher-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 11px 6px 7px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 12px;
+            font-weight: 700;
+            color: #cbd5e1;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .switcher-chip.active {
+            background: var(--accent);
+            color: #05080f;
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .icon-box-switcher {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            min-height: 22px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        /* =====================================================================
+           5. DETAIL PRODUK & PILIHAN PAKET DURASI
+           ===================================================================== */
+        .detail-panel {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        @media (min-width: 640px) {
+            .detail-panel {
+                padding: 26px;
+            }
+        }
+
+        .detail-top-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .promo-badge {
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .fast-process {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .detail-header-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .icon-box-detail {
+            width: 58px;
+            height: 58px;
+            min-width: 58px;
+            min-height: 58px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1.5px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+            background: #0f172a;
+        }
+
+        .detail-title {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            line-height: 1.15;
+        }
+
+        .detail-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        @media (min-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 11px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+
+        .feature-check {
+            color: var(--accent);
+            font-weight: 900;
+        }
+
+        /* Package Selector */
+        .pkg-section-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        .package-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 9px;
+        }
+
+        @media (min-width: 480px) {
+            .package-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .pkg-option-btn {
+            text-align: left;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .pkg-option-btn.selected {
+            background: rgba(255, 255, 255, 0.11);
+            border-color: var(--accent);
+            box-shadow: 0 0 18px var(--accent-glow);
+        }
+
+        .pkg-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .pkg-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .pkg-tag {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: var(--accent);
+            color: #05080f;
+            text-transform: uppercase;
+        }
+
+        .pkg-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 7px;
+            margin-top: 2px;
+        }
+
+        .pkg-price-now {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        .pkg-price-old {
+            font-size: 11px;
+            color: #64748b;
+            text-decoration: line-through;
+        }
+
+        /* Checkout Action Bar */
+        .checkout-bar {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .total-price-old {
+            font-size: 12px;
+            color: #64748b;
+            text-decoration: line-through;
+        }
+
+        .total-price-now {
+            font-size: 26px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        .action-btns-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 230px;
+        }
+
+        .btn-add-cart {
+            padding: 13px 16px;
+            border-radius: 13px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            font-size: 13px;
+            font-weight: 800;
+            color: #ffffff;
+            white-space: nowrap;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .btn-add-cart:active {
+            transform: scale(0.96);
+        }
+
+        .btn-buy-qris {
+            flex: 1;
+            padding: 13px 18px;
+            border-radius: 13px;
+            background: var(--accent);
+            color: #05080f;
+            font-size: 13px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            box-shadow: 0 8px 24px var(--accent-glow);
+            white-space: nowrap;
+            transition: transform 0.15s ease, background 0.4s ease;
+        }
+
+        .btn-buy-qris:active {
+            transform: scale(0.96);
+        }
+
+        /* =====================================================================
+           6. KATALOG APLIKASI PREMIUM
+           ===================================================================== */
+        .catalog-header {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .catalog-header {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+        }
+
+        .catalog-title {
+            font-size: 21px;
+            font-weight: 900;
+            color: #ffffff;
+        }
+
+        .catalog-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .filter-tab {
+            padding: 8px 14px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .filter-tab.active {
+            background: #ffffff;
+            color: #05080f;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        @media (min-width: 580px) {
+            .catalog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 920px) {
+            .catalog-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .catalog-card {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .catalog-card:active {
+            transform: scale(0.98);
+        }
+
+        .catalog-card.active-product {
+            border-color: var(--card-accent, var(--accent));
+            box-shadow: 0 0 24px var(--card-glow, var(--accent-glow));
+        }
+
+        .cat-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .icon-box-catalog {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            min-height: 50px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: #0f172a;
+        }
+
+        .pkg-count-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+        }
+
+        .cat-card-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        .cat-card-tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        .cat-card-bottom {
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cat-start-label {
+            display: block;
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .cat-start-price {
+            font-size: 15px;
+            font-weight: 900;
+            color: #ffffff;
+        }
+
+        .cat-view-btn {
+            padding: 7px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 11px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        /* =====================================================================
+           7. MODAL QRIS GOPAY MERCHANT & CART DRAWER
+           ===================================================================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 440px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: #0c1220;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .order-summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .order-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+
+        .order-total-row {
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .copy-nominal-btn {
+            padding: 4px 9px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Kartu QRIS GoPay Merchant Resmi HIYUKI STORE */
+        .qris-merchant-card {
+            border-radius: 18px;
+            background: #00a5cf;
+            padding: 0 12px 12px;
+            color: #0f172a;
+            box-shadow: 0 12px 30px rgba(0, 165, 207, 0.25);
+        }
+
+        .qris-top-banner {
+            padding: 10px 8px;
+            text-align: center;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .gopay-g-badge {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #00a5cf;
+            font-size: 13px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qris-white-sheet {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qris-sheet-logos {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .qris-logo-text {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+            text-align: left;
+            line-height: 1;
+        }
+
+        .qris-logo-sub {
+            font-size: 8px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .gpn-pill {
+            padding: 3px 7px;
+            border-radius: 4px;
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .merchant-name {
+            font-size: 13px;
+            font-weight: 900;
+            color: #0f172a;
+            margin-top: 2px;
+        }
+
+        .merchant-nmid {
+            font-size: 11px;
+            font-weight: 700;
+            color: #334155;
+            margin-top: 1px;
+        }
+
+        .qris-svg-wrapper {
+            width: 210px;
+            height: 210px;
+            margin: 10px auto 8px;
+            padding: 8px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .qris-svg-wrapper svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .qris-footer-note {
+            font-size: 10px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 11px 13px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .text-input::placeholder {
+            color: #64748b;
+        }
+
+        .btn-wa-confirm {
+            width: 100%;
+            padding: 14px;
+            border-radius: 13px;
+            background: #22c55e;
+            color: #041309;
+            font-size: 13px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-wa-confirm:active {
+            transform: scale(0.97);
+        }
+
+        /* Cart Drawer */
+        .cart-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 45vh;
+            overflow-y: auto;
+        }
+
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 13px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+        }
+
+        .cart-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .icon-box-cart {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        .icon-box-cart svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .qty-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.12);
+            font-weight: 900;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        /* Footer */
+        .site-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 22px 16px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .site-footer a {
+            color: var(--accent);
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        /* Toast Notification */
+        .toast-banner {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            z-index: 80;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: #111827;
+            border: 1px solid var(--accent);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .toast-banner.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="brand-wrap">
+                <div class="brand-logo" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zm0 7.5L4.5 5.8 12 2.2l7.5 3.6L12 9.5zm-10 3.2l10 5 10-5v2.3l-10 5-10-5v-2.3zm0 4.5l10 5 10-5v2.3l-10 5-10-5v-2.3z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-title">HIYUKI <span>STORE</span></div>
+                    <div class="brand-sub">Digital &amp; Kreatif • 3D App Store</div>
+                </div>
+            </div>
+
+            <button type="button" class="cart-btn" id="openCartBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Keranjang</span>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <!-- HERO: KARTU VIP 3D + DETAIL PRODUK -->
+        <section class="hero-grid" id="showcaseSection">
+
+            <!-- KOLOM KIRI: KARTU VIP 3D INTERAKTIF -->
+            <div class="panel">
+                <div class="stage-topbar">
+                    <div class="live-pill">
+                        <span class="live-dot"></span>
+                        <span>KARTU VIP 3D INTERAKTIF</span>
+                    </div>
+                    <div class="stage-controls">
+                        <button type="button" class="ctrl-btn" id="flipCardBtn">🔄 Balik Kartu</button>
+                        <button type="button" class="ctrl-btn" id="spinCardBtn">🌀 Putar 360°</button>
+                    </div>
+                </div>
+
+                <div class="stage-3d-viewport" id="stageViewport">
+                    <div class="orbit-ring"></div>
+
+                    <div class="vip-card-3d" id="vipCard3d">
+                        <div class="card-edge-layer"></div>
+
+                        <!-- SISI DEPAN KARTU 3D -->
+                        <div class="card-side card-side-front">
+                            <div class="card-grid-bg"></div>
+                            <div class="card-holo-glare" id="glareFront"></div>
+
+                            <div class="card-front-top">
+                                <div class="icon-box-card" id="cardFrontIcon"></div>
+                                <div class="vip-pass-tag">★ VIP 3D PASS</div>
+                            </div>
+
+                            <div class="card-front-mid">
+                                <div class="card-official-label">HIYUKI STORE OFFICIAL</div>
+                                <div class="card-app-name" id="cardAppName">Alight Motion Pro</div>
+                                <div class="card-app-tagline" id="cardAppTagline">No Watermark • Support Preset XML &amp; 5MB+</div>
+                            </div>
+
+                            <div class="card-front-bottom">
+                                <div>
+                                    <span class="card-price-label">Paket Dipilih</span>
+                                    <span class="card-price-value" id="cardPriceValue">Rp 7.000</span>
+                                </div>
+                                <span class="card-warranty-pill">GARANSI FULL 100%</span>
+                            </div>
+                        </div>
+
+                        <!-- SISI BELAKANG KARTU 3D -->
+                        <div class="card-side card-side-back">
+                            <div class="card-grid-bg"></div>
+                            <div class="card-holo-glare" id="glareBack"></div>
+
+                            <div class="card-back-strip">
+                                <div style="display:flex;align-items:center;gap:7px;">
+                                    <div class="icon-box-mini" id="cardBackIcon"></div>
+                                    <span style="font-size:9px;font-weight:800;color:#e2e8f0;">HIYUKI VIP SERIAL</span>
+                                </div>
+                                <span style="font-size:9px;font-weight:900;color:var(--accent);" id="cardSerialCode">HYK-AM-2026</span>
+                            </div>
+
+                            <div class="card-back-info">
+                                <div class="back-info-row">
+                                    <span style="color:#94a3b8;">Status Garansi</span>
+                                    <strong style="color:#ffffff;">Full Replace &amp; Anti Hold</strong>
+                                </div>
+                                <div class="back-info-row">
+                                    <span style="color:#94a3b8;">Aktivasi</span>
+                                    <strong style="color:var(--accent);" id="cardActivationType">Instan 1–5 Menit</strong>
+                                </div>
+                                <div class="back-info-row">
+                                    <span style="color:#94a3b8;">Metode Bayar</span>
+                                    <strong style="color:#ffffff;">QRIS All Payment</strong>
+                                </div>
+                            </div>
+
+                            <div class="card-back-footer">
+                                <span>Admin WA: 0857-4177-1203</span>
+                                <strong style="color:#ffffff;">VERIFIED ✓</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stage-footer">
+                    <div class="drag-hint">👆 Geser kartu ke kiri/kanan/atas/bawah dengan jari untuk memutar 3D</div>
+                    <div class="quick-switcher" id="quickSwitcher"></div>
+                </div>
+            </div>
+
+            <!-- KOLOM KANAN: DETAIL PRODUK & PILIHAN PAKET DURASI -->
+            <div class="panel detail-panel">
+                <div class="detail-top-meta">
+                    <span class="promo-badge" id="detailBadge">TERLARIS • FULL PRESET</span>
+                    <span class="fast-process">⚡ Proses Cepat 1–5 Menit</span>
+                </div>
+
+                <div class="detail-header-box">
+                    <div class="icon-box-detail" id="detailIcon"></div>
+                    <div>
+                        <h1 class="detail-title" id="detailTitle">Alight Motion Pro</h1>
+                        <p class="detail-desc" id="detailDesc">Akses penuh semua fitur Alight Motion Pro! Ekspor video tanpa watermark, support import preset XML &amp; 5MB+, serta seluruh efek premium terbuka.</p>
+                    </div>
+                </div>
+
+                <div class="features-grid" id="detailFeatures"></div>
+
+                <div>
+                    <span class="pkg-section-label">Pilih Paket &amp; Durasi Langganan:</span>
+                    <div class="package-list" id="packageList"></div>
+                </div>
+
+                <div class="checkout-bar">
+                    <div>
+                        <div class="total-price-old" id="detailOldPrice">Rp 35.000</div>
+                        <div class="total-price-now" id="detailNowPrice">Rp 7.000</div>
+                    </div>
+
+                    <div class="action-btns-group">
+                        <button type="button" class="btn-add-cart" id="addToCartBtn">+ Keranjang</button>
+                        <button type="button" class="btn-buy-qris" id="buyNowQrisBtn">💳 Beli Sekarang (QRIS)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION KATALOG APLIKASI PREMIUM -->
+        <section style="display:flex;flex-direction:column;gap:16px;">
+            <div class="catalog-header">
+                <div>
+                    <h2 class="catalog-title">Katalog Aplikasi Premium</h2>
+                    <p class="catalog-sub">Tap aplikasi di bawah untuk melihat kartu 3D &amp; memilih paket harga.</p>
+                </div>
+
+                <div class="filter-tabs" id="filterTabs">
+                    <button type="button" class="filter-tab active" data-cat="all">Semua (6)</button>
+                    <button type="button" class="filter-tab" data-cat="editing">Editing &amp; Desain</button>
+                    <button type="button" class="filter-tab" data-cat="streaming">Streaming &amp; Musik</button>
+                </div>
+            </div>
+
+            <div class="catalog-grid" id="catalogGrid"></div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div style="font-weight:900;color:#ffffff;">HIYUKI STORE — DIGITAL &amp; KREATIF</div>
+        <div style="margin-top:4px;">
+            WhatsApp Admin Resmi: <a href="https://wa.me/6285741771203" target="_blank" rel="noopener">0857-4177-1203</a> • Pembayaran QRIS All Payment
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         MODAL PEMBAYARAN QRIS HIYUKI STORE (GOPAY MERCHANT)
+         ===================================================================== -->
+    <div class="modal-overlay" id="qrisModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div>
+                    <div style="font-size:16px;font-weight:900;color:#ffffff;">Pembayaran QRIS Instan</div>
+                    <div style="font-size:11px;color:#94a3b8;">HIYUKI STORE, DIGITAL &amp; KREATIF</div>
+                </div>
+                <button type="button" class="modal-close" id="closeQrisModalBtn">✕</button>
+            </div>
+
+            <!-- Rincian Pesanan -->
+            <div class="order-summary-card">
+                <div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#94a3b8;">Rincian Pesanan Kamu:</div>
+                <div id="modalOrderLines" style="display:flex;flex-direction:column;gap:6px;"></div>
+                <div class="order-total-row">
+                    <span style="font-size:12px;font-weight:700;color:#cbd5e1;">Total Bayar:</span>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span id="modalTotalAmount" style="font-size:18px;font-weight:900;color:#34d399;">Rp 7.000</span>
+                        <button type="button" class="copy-nominal-btn" id="copyNominalBtn">Salin</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kartu GoPay Merchant QRIS Resmi HIYUKI STORE -->
+            <div class="qris-merchant-card">
+                <div class="qris-top-banner">
+                    <span class="gopay-g-badge">G</span>
+                    <span>gopay <span style="font-weight:400;">merchant</span></span>
+                </div>
+
+                <div class="qris-white-sheet">
+                    <div class="qris-sheet-logos">
+                        <div>
+                            <div class="qris-logo-text">QRIS</div>
+                            <div class="qris-logo-sub">QR Code Standar Pembayaran Nasional</div>
+                        </div>
+                        <span class="gpn-pill">GPN</span>
+                    </div>
+
+                    <div class="merchant-name">HIYUKI STORE, DIGITAL &amp; KREATIF</div>
+                    <div class="merchant-nmid">NMID: ID1026547091037 • A01</div>
+
+                    <div class="qris-svg-wrapper" id="qrisMatrixContainer"></div>
+
+                    <div class="qris-footer-note">Dicetak oleh: 93600914 • Terima pembayaran QRIS dari mana saja (GoPay, DANA, OVO, ShopeePay, BCA, BRI, Mandiri, BNI)</div>
+                </div>
+            </div>
+
+            <!-- Form Data Pembeli -->
+            <div class="form-group">
+                <input type="text" class="text-input" id="buyerNameInput" placeholder="Nama Kamu (contoh: Andi)">
+                <input type="text" class="text-input" id="buyerEmailInput" placeholder="Email / No. HP untuk aktivasi akun (opsional)">
+            </div>
+
+            <button type="button" class="btn-wa-confirm" id="confirmWaBtn">
+                <span>📲 Konfirmasi Bukti Bayar ke WhatsApp Admin (085741771203)</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL KERANJANG BELANJA
+         ===================================================================== -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div>
+                    <div style="font-size:16px;font-weight:900;color:#ffffff;">Keranjang Belanja</div>
+                    <div style="font-size:11px;color:#94a3b8;">HIYUKI STORE — Digital &amp; Kreatif</div>
+                </div>
+                <button type="button" class="modal-close" id="closeCartModalBtn">✕</button>
+            </div>
+
+            <div class="cart-items-container" id="cartItemsList"></div>
+
+            <div style="padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:13px;font-weight:700;color:#cbd5e1;">Total Keranjang:</span>
+                <span id="cartTotalText" style="font-size:19px;font-weight:900;color:var(--accent);">Rp 0</span>
+            </div>
+
+            <button type="button" class="btn-buy-qris" id="checkoutCartBtn" style="width:100%;padding:14px;">
+                <span>💳 Lanjut Bayar via QRIS</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-banner" id="toastBanner"></div>
+
+    <!-- =====================================================================
+         JAVASCRIPT ENGINE (100% SELF-CONTAINED, NO DUPLICATE SVG IDs)
+         ===================================================================== -->
+    <script>
+        (function () {
+            "use strict";
+
+            // 1. KONFIGURASI NOMOR WHATSAPP ADMIN
+            const ADMIN_WHATSAPP = "6285741771203"; // 085741771203
+
+            // 2. GENERATOR IKON SVG APLIKASI ASLI (TANPA ID GRADIENT DUPLIKAT)
+            function getAppIconSVG(appId) {
+                switch (appId) {
+                    case "alight-motion":
+                        // Alight Motion Pro - Dark Teal dengan Cincin Gelombang Spiral khas Alight Motion
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#052620"/>
+                            <circle cx="32" cy="32" r="22" fill="#0B3B32"/>
+                            <circle cx="32" cy="32" r="19" fill="none" stroke="#10B981" stroke-width="4.5" stroke-dasharray="84 26" stroke-linecap="round"/>
+                            <circle cx="32" cy="32" r="13" fill="none" stroke="#34D399" stroke-width="3.6" stroke-dasharray="56 22" stroke-linecap="round" transform="rotate(70 32 32)"/>
+                            <path d="M32 24.5c-4.2 0-7.5 3.3-7.5 7.5 0 3 1.7 5.6 4.4 6.8 1.7.7 3.7.4 5.1-.8 2.1-1.9 2.4-5.1.6-7.3-1.2-1.5-3.3-1.8-4.9-.8-1.1.8-1.5 2.4-.7 3.5.5.8 1.6 1 2.4.5" fill="none" stroke="#A7F3D0" stroke-width="3" stroke-linecap="round"/>
+                        </svg>`;
+
+                    case "capcut-pro":
+                        // CapCut Pro - Hitam elegan dengan ikon bingkai potong X khas CapCut
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#0A0C10"/>
+                            <rect x="13" y="17" width="6" height="30" rx="2" fill="#FFFFFF" opacity="0.16"/>
+                            <g fill="none" stroke="#FFFFFF" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 20L48 44"/>
+                                <path d="M48 20L16 44"/>
+                                <path d="M16 20v8"/>
+                                <path d="M16 44v-8"/>
+                                <path d="M48 20v8"/>
+                                <path d="M48 44v-8"/>
+                            </g>
+                        </svg>`;
+
+                    case "youtube-premium":
+                        // YouTube Premium - Merah ikonik dengan tombol Play putih presisi
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#E60023"/>
+                            <rect x="10" y="17" width="44" height="30" rx="8.5" fill="#FFFFFF"/>
+                            <polygon points="27,24.5 27,39.5 40.5,32" fill="#E60023"/>
+                        </svg>`;
+
+                    case "netflix-4k":
+                        // Netflix 4K - Hitam pekat dengan pita huruf N merah khas Netflix
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#09090B"/>
+                            <path d="M19 13h8v38h-8z" fill="#B20710"/>
+                            <path d="M37 13h8v38h-8z" fill="#B20710"/>
+                            <path d="M19 13h8l18 38h-8z" fill="#E50914"/>
+                        </svg>`;
+
+                    case "spotify-premium":
+                        // Spotify Premium - Hijau Spotify dengan 3 gelombang suara khas Spotify
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#1DB954"/>
+                            <circle cx="32" cy="32" r="22" fill="#121212" opacity="0.1"/>
+                            <path d="M18 25c9-2.7 21-2.2 29 2.5" fill="none" stroke="#111111" stroke-width="4.5" stroke-linecap="round"/>
+                            <path d="M20.5 33c7.3-2.1 16.8-1.6 23.5 2.2" fill="none" stroke="#111111" stroke-width="3.9" stroke-linecap="round"/>
+                            <path d="M22.5 40.5c5.7-1.6 13-1.2 18.2 1.7" fill="none" stroke="#111111" stroke-width="3.4" stroke-linecap="round"/>
+                        </svg>`;
+
+                    case "canva-pro":
+                        // Canva Pro - Biru Tosca ke Ungu dengan huruf C kaligrafi khas Canva
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#00C4CC"/>
+                            <circle cx="48" cy="48" r="24" fill="#7D2AE8" opacity="0.55"/>
+                            <path d="M42 22.5c-1.8-2.4-4.7-3.7-8.2-3.7-7.5 0-13.6 6.5-13.6 14.4 0 6.5 4.3 11.3 10.4 11.3 4.8 0 8.9-2.7 11.4-6.8" fill="none" stroke="#FFFFFF" stroke-width="5.2" stroke-linecap="round"/>
+                            <circle cx="43" cy="23.2" r="2.7" fill="#FFFFFF"/>
+                        </svg>`;
+
+                    default:
+                        return `<svg viewBox="0 0 64 64" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="64" height="64" rx="15" fill="#10B981"/>
+                            <circle cx="32" cy="32" r="14" fill="#FFFFFF"/>
+                        </svg>`;
+                }
+            }
+
+            // 3. DATA PRODUK & PAKET HARGA (MUDAH DIEDIT SENDIRI)
+            const PRODUCTS = [
+                {
+                    id: "alight-motion",
+                    name: "Alight Motion Pro",
+                    shortName: "AM Pro",
+                    category: "editing",
+                    serial: "HYK-AM-2026",
+                    badge: "TERLARIS • FULL PRESET",
+                    tagline: "No Watermark • Support Preset XML & 5MB+",
+                    description: "Akses penuh semua fitur Alight Motion Pro! Ekspor video tanpa watermark, support import preset XML & 5MB+, serta seluruh efek premium terbuka.",
+                    accent: "#00ff88",
+                    accentDark: "#063b2b",
+                    glow: "rgba(0, 255, 136, 0.32)",
+                    features: [
+                        "No Watermark Export",
+                        "Support Preset XML & 5MB+",
+                        "All Effects & Fonts Unlocked",
+                        "Support Android & iOS"
+                    ],
+                    packages: [
+                        { label: "Sharing 1 Bulan", price: 7000, oldPrice: 35000, tag: "Hemat" },
+                        { label: "Sharing 1 Tahun", price: 12000, oldPrice: 65000, tag: "Best Seller" },
+                        { label: "Private 1 Tahun", price: 25000, oldPrice: 120000, tag: "Private" }
+                    ]
+                },
+                {
+                    id: "capcut-pro",
+                    name: "CapCut Pro",
+                    shortName: "CapCut",
+                    category: "editing",
+                    serial: "HYK-CC-2026",
+                    badge: "POPULER • AI FEATURES",
+                    tagline: "All Effects, Auto Captions & Cloud Space",
+                    description: "Buka semua efek Pro, transisi sinematik, auto-captions tanpa batas, hapus background AI, serta template eksklusif CapCut Pro.",
+                    accent: "#00e5ff",
+                    accentDark: "#083344",
+                    glow: "rgba(0, 229, 255, 0.32)",
+                    features: [
+                        "All Pro Effects & Filters",
+                        "Auto Captions Unlimited",
+                        "100GB Cloud Storage",
+                        "Garansi Full Masa Aktif"
+                    ],
+                    packages: [
+                        { label: "Sharing 1 Bulan", price: 15000, oldPrice: 45000, tag: "Murah" },
+                        { label: "Private 1 Bulan", price: 32000, oldPrice: 89000, tag: "Terlaris" },
+                        { label: "Private 3 Bulan", price: 75000, oldPrice: 220000, tag: "Hemat" },
+                        { label: "Private 1 Tahun", price: 165000, oldPrice: 450000, tag: "VIP" }
+                    ]
+                },
+                {
+                    id: "youtube-premium",
+                    name: "YouTube Premium",
+                    shortName: "YouTube",
+                    category: "streaming",
+                    serial: "HYK-YT-2026",
+                    badge: "LEGAL • VIA INVITE",
+                    tagline: "Bebas Iklan + Gratis YouTube Music",
+                    description: "Nonton video tanpa gangguan iklan, putar di latar belakang saat layar mati, download video offline, dan gratis akses penuh YouTube Music.",
+                    accent: "#ff2e55",
+                    accentDark: "#4c0519",
+                    glow: "rgba(255, 46, 85, 0.32)",
+                    features: [
+                        "100% Bebas Iklan",
+                        "Background Play & PiP",
+                        "Termasuk YouTube Music",
+                        "Pakai Email Pribadi"
+                    ],
+                    packages: [
+                        { label: "FamPlan 1 Bulan", price: 10000, oldPrice: 59000, tag: "Best Seller" },
+                        { label: "Individu 1 Bulan", price: 18000, oldPrice: 69000, tag: "Private" },
+                        { label: "Individu 3 Bulan", price: 45000, oldPrice: 179000, tag: "Awet" }
+                    ]
+                },
+                {
+                    id: "netflix-4k",
+                    name: "Netflix Ultra HD 4K",
+                    shortName: "Netflix",
+                    category: "streaming",
+                    serial: "HYK-NF-2026",
+                    badge: "4K HDR • ANTI HOLD",
+                    tagline: "Streaming Film & Series Tanpa Batas",
+                    description: "Nikmati ribuan film, drakor, dan serial original Netflix kualitas Ultra HD 4K + HDR. Akun resmi region Indonesia dengan garansi penuh.",
+                    accent: "#ff4d2a",
+                    accentDark: "#450a0a",
+                    glow: "rgba(255, 77, 42, 0.32)",
+                    features: [
+                        "Kualitas Ultra HD 4K + HDR",
+                        "1 Profile 1 User (Aman)",
+                        "Bisa Download Offline",
+                        "Support HP, Laptop & TV"
+                    ],
+                    packages: [
+                        { label: "1 Bulan Sharing (1P1U)", price: 28000, oldPrice: 65000, tag: "Best Seller" },
+                        { label: "1 Bulan Semi-Private", price: 38000, oldPrice: 85000, tag: "Stabil" },
+                        { label: "1 Bulan Private (1 Akun)", price: 135000, oldPrice: 186000, tag: "Full Akun" }
+                    ]
+                },
+                {
+                    id: "spotify-premium",
+                    name: "Spotify Premium",
+                    shortName: "Spotify",
+                    category: "streaming",
+                    serial: "HYK-SP-2026",
+                    badge: "AUDIO LOSSLESS • NO ADS",
+                    tagline: "Musik Tanpa Iklan & Download Offline",
+                    description: "Dengarkan jutaan lagu dan podcast tanpa iklan, kualitas audio tertinggi, skip lagu tanpa batas, dan mode offline kapan saja.",
+                    accent: "#1ed760",
+                    accentDark: "#052e16",
+                    glow: "rgba(30, 215, 96, 0.32)",
+                    features: [
+                        "Tanpa Iklan Audio/Banner",
+                        "Download Lagu Offline",
+                        "Kualitas Audio Very High",
+                        "Bisa Perpanjang Akun Lama"
+                    ],
+                    packages: [
+                        { label: "FamPlan 1 Bulan", price: 14000, oldPrice: 54990, tag: "Terlaris" },
+                        { label: "Individu 1 Bulan", price: 22000, oldPrice: 54990, tag: "Private" },
+                        { label: "Individu 3 Bulan", price: 55000, oldPrice: 165000, tag: "Hemat" },
+                        { label: "Individu 1 Tahun", price: 160000, oldPrice: 599000, tag: "VIP" }
+                    ]
+                },
+                {
+                    id: "canva-pro",
+                    name: "Canva Pro",
+                    shortName: "Canva",
+                    category: "editing",
+                    serial: "HYK-CV-2026",
+                    badge: "DESAIN CEPAT • MAGIC AI",
+                    tagline: "100 Juta+ Template & Hapus Background AI",
+                    description: "Akses 100+ juta foto, elemen grafis, font premium, Magic Resize, dan Background Remover instan hanya dalam satu klik.",
+                    accent: "#c084fc",
+                    accentDark: "#3b0764",
+                    glow: "rgba(192, 132, 252, 0.32)",
+                    features: [
+                        "100 Juta+ Elemen & Foto Pro",
+                        "1-Click Background Remover",
+                        "Magic Resize & Brand Kit",
+                        "Invite Langsung ke Email"
+                    ],
+                    packages: [
+                        { label: "Pro 1 Bulan", price: 8000, oldPrice: 95000, tag: "Murah" },
+                        { label: "Pro 1 Tahun", price: 25000, oldPrice: 769000, tag: "Best Seller" },
+                        { label: "Pro Lifetime (Team)", price: 35000, oldPrice: 1200000, tag: "Awet" }
+                    ]
+                }
+            ];
+
+            // 4. STATE APLIKASI
+            let activeProduct = PRODUCTS[0];
+            let activePackageIdx = 0;
+            let activeCategory = "all";
+            let cart = [];
+            let checkoutItems = [];
+
+            // State Animasi Kartu 3D
+            let rotX = 6;
+            let rotY = -14;
+            let targetRotX = 6;
+            let targetRotY = -14;
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
+            let isFlipped = false;
+
+            // Helper Format Rupiah
+            function formatIDR(num) {
+                return "Rp " + Number(num).toLocaleString("id-ID");
+            }
+
+            // Helper Toast
+            let toastTimer = null;
+            function showToast(message) {
+                const toast = document.getElementById("toastBanner");
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add("show");
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 2400);
+            }
+
+            // 5. RENDER THEME & PRODUK AKTIF
+            function selectProduct(productId, scrollToTop) {
+                const found = PRODUCTS.find((p) => p.id === productId);
+                if (!found) return;
+
+                activeProduct = found;
+                activePackageIdx = 0;
+                isFlipped = false;
+                targetRotY += 360;
+
+                // Update CSS Variables Tema
+                const rootStyle = document.documentElement.style;
+                rootStyle.setProperty("--accent", found.accent);
+                rootStyle.setProperty("--accent-dark", found.accentDark);
+                rootStyle.setProperty("--accent-glow", found.glow);
+
+                // Update Kartu 3D Depan & Belakang
+                document.getElementById("cardFrontIcon").innerHTML = getAppIconSVG(found.id);
+                document.getElementById("cardBackIcon").innerHTML = getAppIconSVG(found.id);
+                document.getElementById("cardAppName").textContent = found.name;
+                document.getElementById("cardAppTagline").textContent = found.tagline;
+                document.getElementById("cardSerialCode").textContent = found.serial;
+
+                // Update Panel Detail Kanan
+                document.getElementById("detailBadge").textContent = found.badge;
+                document.getElementById("detailIcon").innerHTML = getAppIconSVG(found.id);
+                document.getElementById("detailTitle").textContent = found.name;
+                document.getElementById("detailDesc").textContent = found.description;
+
+                document.getElementById("detailFeatures").innerHTML = found.features
+                    .map(
+                        (feat) => `
+                        <div class="feature-item">
+                            <span class="feature-check">✔</span>
+                            <span>${feat}</span>
+                        </div>`
+                    )
+                    .join("");
+
+                renderPackages();
+                renderQuickSwitcher();
+                renderCatalog();
+
+                if (scrollToTop) {
+                    const sec = document.getElementById("showcaseSection");
+                    if (sec) sec.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+
+            // Render Daftar Paket & Durasi Langganan
+            function renderPackages() {
+                const container = document.getElementById("packageList");
+                if (!container) return;
+
+                container.innerHTML = activeProduct.packages
+                    .map((pkg, idx) => {
+                        const isSelected = idx === activePackageIdx;
+                        return `
+                            <button type="button" class="pkg-option-btn ${isSelected ? "selected" : ""}" data-pkg-idx="${idx}">
+                                <div class="pkg-top-row">
+                                    <span class="pkg-name">${pkg.label}</span>
+                                    ${pkg.tag ? `<span class="pkg-tag">${pkg.tag}</span>` : ""}
+                                </div>
+                                <div class="pkg-price-row">
+                                    <span class="pkg-price-now">${formatIDR(pkg.price)}</span>
+                                    <span class="pkg-price-old">${formatIDR(pkg.oldPrice)}</span>
+                                </div>
+                            </button>
+                        `;
+                    })
+                    .join("");
+
+                // Pasang event listener klik ke tiap paket
+                container.querySelectorAll(".pkg-option-btn").forEach((btn) => {
+                    btn.addEventListener("click", function () {
+                        const idx = parseInt(this.getAttribute("data-pkg-idx"), 10);
+                        selectPackage(idx);
+                    });
+                });
+
+                updateSelectedPackagePrices();
+            }
+
+            function selectPackage(idx) {
+                if (idx < 0 || idx >= activeProduct.packages.length) return;
+                activePackageIdx = idx;
+                renderPackages();
+            }
+
+            function updateSelectedPackagePrices() {
+                const pkg = activeProduct.packages[activePackageIdx] || activeProduct.packages[0];
+                document.getElementById("detailOldPrice").textContent = formatIDR(pkg.oldPrice);
+                document.getElementById("detailNowPrice").textContent = formatIDR(pkg.price);
+                document.getElementById("cardPriceValue").textContent = formatIDR(pkg.price);
+            }
+
+            // Render Tombol Quick Switcher di bawah Kartu 3D
+            function renderQuickSwitcher() {
+                const container = document.getElementById("quickSwitcher");
+                if (!container) return;
+
+                container.innerHTML = PRODUCTS.map((prod) => {
+                    const isActive = prod.id === activeProduct.id;
+                    return `
+                        <button type="button" class="switcher-chip ${isActive ? "active" : ""}" data-prod-id="${prod.id}">
+                            <span class="icon-box-switcher">${getAppIconSVG(prod.id)}</span>
+                            <span>${prod.shortName}</span>
+                        </button>
+                    `;
+                }).join("");
+
+                container.querySelectorAll(".switcher-chip").forEach((chip) => {
+                    chip.addEventListener("click", function () {
+                        selectProduct(this.getAttribute("data-prod-id"), false);
+                    });
+                });
+            }
+
+            // Render Grid Katalog Aplikasi Premium
+            function renderCatalog() {
+                const grid = document.getElementById("catalogGrid");
+                if (!grid) return;
+
+                const filtered =
+                    activeCategory === "all"
+                        ? PRODUCTS
+                        : PRODUCTS.filter((p) => p.category === activeCategory);
+
+                grid.innerHTML = filtered
+                    .map((prod) => {
+                        const isActive = prod.id === activeProduct.id;
+                        const minPrice = prod.packages[0].price;
+                        return `
+                            <div class="catalog-card ${isActive ? "active-product" : ""}"
+                                 data-prod-id="${prod.id}"
+                                 style="--card-accent:${prod.accent};--card-glow:${prod.glow};">
+                                <div>
+                                    <div class="cat-card-top">
+                                        <div class="icon-box-catalog">${getAppIconSVG(prod.id)}</div>
+                                        <span class="pkg-count-pill">${prod.packages.length} Paket</span>
+                                    </div>
+                                    <div class="cat-card-name">${prod.name}</div>
+                                    <div class="cat-card-tagline">${prod.tagline}</div>
+                                </div>
+                                <div class="cat-card-bottom">
+                                    <div>
+                                        <span class="cat-start-label">Mulai dari</span>
+                                        <span class="cat-start-price">${formatIDR(minPrice)}</span>
+                                    </div>
+                                    <span class="cat-view-btn">Lihat 3D →</span>
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .join("");
+
+                grid.querySelectorAll(".catalog-card").forEach((card) => {
+                    card.addEventListener("click", function () {
+                        selectProduct(this.getAttribute("data-prod-id"), true);
+                    });
+                });
+            }
+
+            // 6. ENGINE ANIMASI & SENTUHAN KARTU 3D
+            function init3DStage() {
+                const viewport = document.getElementById("stageViewport");
+                const card = document.getElementById("vipCard3d");
+                const glareFront = document.getElementById("glareFront");
+                const glareBack = document.getElementById("glareBack");
+
+                if (!viewport || !card) return;
+
+                // Mouse Drag
+                viewport.addEventListener("mousedown", (e) => {
+                    isDragging = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                });
+
+                window.addEventListener("mousemove", (e) => {
+                    if (!isDragging) return;
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+                    targetRotY += dx * 0.6;
+                    targetRotX -= dy * 0.45;
+                    targetRotX = Math.max(-42, Math.min(42, targetRotX));
+                    startX = e.clientX;
+                    startY = e.clientY;
+                });
+
+                window.addEventListener("mouseup", () => {
+                    isDragging = false;
+                });
+
+                // Touch Drag (HP Android & iOS)
+                viewport.addEventListener(
+                    "touchstart",
+                    (e) => {
+                        if (e.touches.length === 1) {
+                            isDragging = true;
+                            startX = e.touches[0].clientX;
+                            startY = e.touches[0].clientY;
+                        }
+                    },
+                    { passive: true }
+                );
+
+                viewport.addEventListener(
+                    "touchmove",
+                    (e) => {
+                        if (!isDragging || e.touches.length !== 1) return;
+                        const dx = e.touches[0].clientX - startX;
+                        const dy = e.touches[0].clientY - startY;
+                        targetRotY += dx * 0.7;
+                        targetRotX -= dy * 0.5;
+                        targetRotX = Math.max(-42, Math.min(42, targetRotX));
+                        startX = e.touches[0].clientX;
+                        startY = e.touches[0].clientY;
+                    },
+                    { passive: true }
+                );
+
+                viewport.addEventListener("touchend", () => {
+                    isDragging = false;
+                });
+
+                // Tombol Balik & Putar 360
+                document.getElementById("flipCardBtn").addEventListener("click", () => {
+                    isFlipped = !isFlipped;
+                    targetRotY += 180;
+                });
+
+                document.getElementById("spinCardBtn").addEventListener("click", () => {
+                    targetRotY += 360;
+                });
+
+                // Loop 60fps
+                let clock = 0;
+                function animate() {
+                    clock += 0.024;
+                    if (!isDragging) {
+                        const baseRotY = isFlipped ? 180 : 0;
+                        targetRotY = baseRotY + Math.sin(clock * 0.85) * 20;
+                        targetRotX = Math.cos(clock * 0.7) * 7;
+                    }
+
+                    rotX += (targetRotX - rotX) * 0.1;
+                    rotY += (targetRotY - rotY) * 0.1;
+                    const floatY = Math.sin(clock * 1.4) * 5;
+
+                    card.style.transform = `translateY(${floatY.toFixed(2)}px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
+
+                    const gx = 50 + (rotY % 90) * 0.45;
+                    const gy = 50 + rotX * 0.8;
+                    glareFront.style.setProperty("--glare-x", `${gx}%`);
+                    glareFront.style.setProperty("--glare-y", `${gy}%`);
+                    glareBack.style.setProperty("--glare-x", `${100 - gx}%`);
+                    glareBack.style.setProperty("--glare-y", `${gy}%`);
+
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+
+            // 7. KERANJANG BELANJA & PEMBAYARAN QRIS HIYUKI STORE
+            function addToCart() {
+                const pkg = activeProduct.packages[activePackageIdx];
+                const key = `${activeProduct.id}::${pkg.label}`;
+                const existing = cart.find((item) => item.key === key);
+
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({
+                        key,
+                        id: activeProduct.id,
+                        name: activeProduct.name,
+                        packageLabel: pkg.label,
+                        price: pkg.price,
+                        qty: 1
+                    });
+                }
+
+                updateCartBadge();
+                showToast(`✅ ${activeProduct.name} (${pkg.label}) masuk keranjang!`);
+            }
+
+            function updateCartBadge() {
+                const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+                document.getElementById("cartBadge").textContent = totalQty;
+            }
+
+            function renderCartModal() {
+                const listEl = document.getElementById("cartItemsList");
+                const totalEl = document.getElementById("cartTotalText");
+
+                if (cart.length === 0) {
+                    listEl.innerHTML = `<div style="text-align:center;padding:28px 12px;font-size:13px;color:#94a3b8;">Keranjang belanja masih kosong.</div>`;
+                    totalEl.textContent = "Rp 0";
+                    return;
+                }
+
+                let totalPrice = 0;
+                listEl.innerHTML = cart
+                    .map((item, idx) => {
+                        const sub = item.price * item.qty;
+                        totalPrice += sub;
+                        return `
+                            <div class="cart-item-row">
+                                <div class="cart-item-left">
+                                    <div class="icon-box-cart">${getAppIconSVG(item.id)}</div>
+                                    <div style="min-width:0;">
+                                        <div style="font-size:13px;font-weight:800;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</div>
+                                        <div style="font-size:11px;color:#94a3b8;">${item.packageLabel} • ${formatIDR(item.price)}</div>
+                                    </div>
+                                </div>
+                                <div class="qty-controls">
+                                    <button type="button" class="qty-btn" data-action="dec" data-idx="${idx}">-</button>
+                                    <span style="font-size:13px;font-weight:800;">${item.qty}</span>
+                                    <button type="button" class="qty-btn" data-action="inc" data-idx="${idx}">+</button>
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .join("");
+
+                totalEl.textContent = formatIDR(totalPrice);
+
+                listEl.querySelectorAll(".qty-btn").forEach((btn) => {
+                    btn.addEventListener("click", function () {
+                        const idx = parseInt(this.getAttribute("data-idx"), 10);
+                        const act = this.getAttribute("data-action");
+                        if (act === "inc") {
+                            cart[idx].qty += 1;
+                        } else {
+                            cart[idx].qty -= 1;
+                            if (cart[idx].qty <= 0) cart.splice(idx, 1);
+                        }
+                        updateCartBadge();
+                        renderCartModal();
+                    });
+                });
+            }
+
+            // Generator Matriks QRIS SVG Tajam & Valid secara Visual (100% Offline)
+            function buildQRISMatrixSVG() {
+                const modules = 33;
+                let rects = "";
+
+                function addFinder(r, c) {
+                    rects += `<rect x="${c}" y="${r}" width="7" height="7" fill="#000000"/>`;
+                    rects += `<rect x="${c + 1}" y="${r + 1}" width="5" height="5" fill="#ffffff"/>`;
+                    rects += `<rect x="${c + 2}" y="${r + 2}" width="3" height="3" fill="#000000"/>`;
+                }
+
+                function addAlign(r, c) {
+                    rects += `<rect x="${c}" y="${r}" width="5" height="5" fill="#000000"/>`;
+                    rects += `<rect x="${c + 1}" y="${r + 1}" width="3" height="3" fill="#ffffff"/>`;
+                    rects += `<rect x="${c + 2}" y="${r + 2}" width="1" height="1" fill="#000000"/>`;
+                }
+
+                // Seed deterministik dari NMID ID1026547091037
+                let seed = 102654709;
+                function randBit() {
+                    seed = (seed * 1664525 + 1013904223) % 4294967296;
+                    return seed / 4294967296 > 0.48;
+                }
+
+                for (let r = 0; r < modules; r++) {
+                    for (let c = 0; c < modules; c++) {
+                        // Lewati area finder pattern
+                        if ((r < 8 && c < 8) || (r < 8 && c >= modules - 8) || (r >= modules - 8 && c < 8)) {
+                            continue;
+                        }
+                        // Lewati area alignment pattern
+                        if ((r >= 24 && r <= 28 && c >= 24 && c <= 28) || (r >= 14 && r <= 18 && c >= 14 && c <= 18)) {
+                            continue;
+                        }
+                        // Timing pattern
+                        if (r === 6 || c === 6) {
+                            if ((r + c) % 2 === 0) {
+                                rects += `<rect x="${c}" y="${r}" width="1" height="1" fill="#000000"/>`;
+                            }
+                            continue;
+                        }
+                        if (randBit()) {
+                            rects += `<rect x="${c}" y="${r}" width="1" height="1" fill="#000000"/>`;
+                        }
+                    }
+                }
+
+                addFinder(0, 0);
+                addFinder(0, modules - 7);
+                addFinder(modules - 7, 0);
+                addAlign(24, 24);
+                addAlign(14, 14);
+
+                return `<svg viewBox="0 0 ${modules} ${modules}" width="100%" height="100%" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="${modules}" height="${modules}" fill="#ffffff"/>
+                    ${rects}
+                </svg>`;
+            }
+
+            function openQRISModal(items) {
+                checkoutItems = items;
+                const linesEl = document.getElementById("modalOrderLines");
+                let grandTotal = 0;
+
+                linesEl.innerHTML = checkoutItems
+                    .map((item) => {
+                        const sub = item.price * item.qty;
+                        grandTotal += sub;
+                        return `
+                            <div class="order-line">
+                                <span>• <strong>${item.name}</strong> (${item.packageLabel}) ×${item.qty}</span>
+                                <strong>${formatIDR(sub)}</strong>
+                            </div>
+                        `;
+                    })
+                    .join("");
+
+                const totalEl = document.getElementById("modalTotalAmount");
+                totalEl.textContent = formatIDR(grandTotal);
+                totalEl.setAttribute("data-raw-total", String(grandTotal));
+
+                document.getElementById("qrisMatrixContainer").innerHTML = buildQRISMatrixSVG();
+                document.getElementById("qrisModal").classList.add("open");
+            }
+
+            function closeModals() {
+                document.getElementById("qrisModal").classList.remove("open");
+                document.getElementById("cartModal").classList.remove("open");
+            }
+
+            // 8. INISIALISASI EVENT LISTENERS SAAT DOM SIAP
+            document.addEventListener("DOMContentLoaded", function () {
+                // Render produk pertama secara otomatis
+                selectProduct(PRODUCTS[0].id, false);
+                init3DStage();
+
+                // Filter kategori katalog
+                document.getElementById("filterTabs").addEventListener("click", function (e) {
+                    const btn = e.target.closest(".filter-tab");
+                    if (!btn) return;
+                    activeCategory = btn.getAttribute("data-cat");
+                    this.querySelectorAll(".filter-tab").forEach((t) => t.classList.remove("active"));
+                    btn.classList.add("active");
+                    renderCatalog();
+                });
+
+                // Tambah ke keranjang
+                document.getElementById("addToCartBtn").addEventListener("click", addToCart);
+
+                // Beli Sekarang via QRIS
+                document.getElementById("buyNowQrisBtn").addEventListener("click", function () {
+                    const pkg = activeProduct.packages[activePackageIdx];
+                    openQRISModal([
+                        {
+                            id: activeProduct.id,
+                            name: activeProduct.name,
+                            packageLabel: pkg.label,
+                            price: pkg.price,
+                            qty: 1
+                        }
+                    ]);
+                });
+
+                // Buka & Tutup Keranjang
+                document.getElementById("openCartBtn").addEventListener("click", function () {
+                    renderCartModal();
+                    document.getElementById("cartModal").classList.add("open");
+                });
+
+                document.getElementById("closeCartModalBtn").addEventListener("click", closeModals);
+                document.getElementById("closeQrisModalBtn").addEventListener("click", closeModals);
+
+                // Klik backdrop luar modal untuk menutup
+                document.querySelectorAll(".modal-overlay").forEach((overlay) => {
+                    overlay.addEventListener("click", function (e) {
+                        if (e.target === this) closeModals();
+                    });
+                });
+
+                // Checkout dari Keranjang ke QRIS
+                document.getElementById("checkoutCartBtn").addEventListener("click", function () {
+                    if (cart.length === 0) {
+                        showToast("⚠️ Keranjang masih kosong!");
+                        return;
+                    }
+                    document.getElementById("cartModal").classList.remove("open");
+                    openQRISModal([...cart]);
+                });
+
+                // Salin Nominal Bayar
+                document.getElementById("copyNominalBtn").addEventListener("click", function () {
+                    const raw = document.getElementById("modalTotalAmount").getAttribute("data-raw-total") || "0";
+                    const tempInput = document.createElement("input");
+                    tempInput.value = raw;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(tempInput);
+                    showToast(`📋 Nominal ${formatIDR(raw)} berhasil disalin!`);
+                });
+
+                // Kirim Konfirmasi Bukti Bayar ke WhatsApp Admin (085741771203)
+                document.getElementById("confirmWaBtn").addEventListener("click", function () {
+                    const buyerName = document.getElementById("buyerNameInput").value.trim() || "Pelanggan Hiyuki";
+                    const buyerEmail = document.getElementById("buyerEmailInput").value.trim() || "-";
+
+                    let total = 0;
+                    const itemLines = checkoutItems
+                        .map((item, i) => {
+                            const sub = item.price * item.qty;
+                            total += sub;
+                            return `${i + 1}. *${item.name}* (${item.packageLabel}) ×${item.qty} = ${formatIDR(sub)}`;
+                        })
+                        .join("\n");
+
+                    const message =
+                        `Halo Admin *HIYUKI STORE — DIGITAL & KREATIF*! Saya ingin konfirmasi pesanan aplikasi premium:\n\n` +
+                        `*Detail Pesanan:*\n${itemLines}\n\n` +
+                        `*Total Transfer QRIS:* ${formatIDR(total)}\n` +
+                        `*Merchant:* HIYUKI STORE, DIGITAL & KREATIF (NMID: ID1026547091037)\n\n` +
+                        `*Data Pembeli:*\n• Nama: ${buyerName}\n• Email/Akun: ${buyerEmail}\n\n` +
+                        `Berikut saya lampirkan bukti pembayaran QRIS sesuai harga. Mohon diproses ya min!`;
+
+                    const waUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(message)}`;
+                    window.open(waUrl, "_blank");
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
